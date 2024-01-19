@@ -18,7 +18,7 @@ const options = {
       },
     ],
   },
-  apis: [path.resolve(__dirname, './app.js')], // Update with the path to your main Express application
+  apis: [path.resolve(__dirname, './app.js'), path.resolve(__dirname, './thread.js')], // Update with the path to your main Express application
 };
 
 const specs = swaggerJsdoc(options);
