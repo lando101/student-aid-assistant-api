@@ -23,8 +23,11 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Import and use threads routes
-const threadsRoutes = require('./thread'); // Adjust the path if necessary
+const threadsRoutes = require('./routes/thread'); // Adjust the path if necessary
+const chatRoutes = require('./routes/chat');
+
 app.use('/api', threadsRoutes);
+app.use('/api', chatRoutes);
 
 // Start the server
 app.listen(port, () => {
