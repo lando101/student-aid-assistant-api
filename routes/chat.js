@@ -11,13 +11,15 @@ class ChatServer {
 
     initialize() {
         this.wss.on('connection', (ws) => {
-            let conversationHistory = [{"role": "system", "content": "You are a helpful assistant."}];
+            let conversationHistory = [];
 
             ws.on('message', async (userMessage) => {
                 try {
                     // Append user message to the conversation history
-                    conversationHistory.push({"role": "user", "content": userMessage});
+                    // conversationHistory.push({"role": "user", "content": userMessage});
 
+                    conversationHistory = JSON.parse(userMessage);
+                    console.log(conversationHistory)
                     // const stream = await this.openai.chat.completions.create({
                     //     model: "gpt-4-1106-preview",
                     //     messages: conversationHistory,
@@ -26,7 +28,8 @@ class ChatServer {
 
                     const stream2 = await this.openai.beta.chat.completions.stream({
                         model: 'gpt-4',
-                        messages: [{ role: 'user', content: 'Say this is a test' }],
+                        // messages: [{ role: 'user', content: 'Say this is a test' }],
+                        messages: conversationHistory,
                         stream: true,
                       });
 
