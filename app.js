@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
+const http = require('http');
 const app = express();
+const server = http.createServer(app);
 
-const OpenAI = require('openai');
 require('dotenv').config();
+const openaiApiKey = process.env.OPENAI_API_KEY;
 const port = process.env.PORT || 3000;
+
+// Import ChatServer
+const ChatServer = require('./routes/chat');
 
 // Swagger setup
 const swaggerUi = require('swagger-ui-express');
@@ -22,14 +26,14 @@ app.use(express.json());
 // Serve Swagger UI documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Import and use threads routes
+// Import and use routes
 const threadsRoutes = require('./routes/thread'); // Adjust the path if necessary
-const chatRoutes = require('./routes/chat');
-
 app.use('/api', threadsRoutes);
-app.use('/api', chatRoutes);
 
-// Start the server
-app.listen(port, () => {
+// Initialize ChatServer with the HTTP server and OpenAI API key
+new ChatServer(server, openaiApiKey);
+
+// Start the server using server.listen() not app.listen()
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

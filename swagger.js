@@ -1,5 +1,3 @@
-// swagger.js
-
 const swaggerJsdoc = require('swagger-jsdoc');
 const path = require('path');
 
@@ -18,7 +16,12 @@ const options = {
       },
     ],
   },
-  apis: [path.resolve(__dirname, './app.js'), path.resolve(__dirname, './thread.js')], // Update with the path to your main Express application
+  // Update here to include chat.js
+  apis: [
+    path.resolve(__dirname, './app.js'), 
+    path.resolve(__dirname, './routes/thread.js'),
+    path.resolve(__dirname, './routes/chat.js') // Add the path to your chat.js
+  ],
 };
 
 const specs = swaggerJsdoc(options);
