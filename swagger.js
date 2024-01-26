@@ -20,6 +20,7 @@ const options = {
   apis: [
     path.resolve(__dirname, './app.js'), 
     path.resolve(__dirname, './routes/thread.js'),
+    path.resolve(__dirname, './routes/ai.js'),
     path.resolve(__dirname, './routes/chat.js') // Add the path to your chat.js
   ],
 };

@@ -28,7 +28,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Import and use routes
 const threadsRoutes = require('./routes/thread'); // Adjust the path if necessary
-app.use('/api', threadsRoutes);
+const aiRoutes = require('./routes/ai'); // Adjust the path if necessary
+app.use('/api', threadsRoutes, aiRoutes);
 
 // Initialize ChatServer with the HTTP server and OpenAI API key
 new ChatServer(server, openaiApiKey);

@@ -72,6 +72,8 @@ router.post('/api/openai', async (req, res) => {
   }
 });
 
+
+
 /**
  * @swagger
  * /api/assistants:
@@ -174,6 +176,7 @@ router.get('/assistants', async (req, res) => {
  *                   type: string
  *                   description: Error message
  */
+
 
 router.get('/assistant/:assistantId', async (req, res) => {
   const assistantId = req.params.assistantId;
