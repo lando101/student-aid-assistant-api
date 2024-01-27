@@ -56,12 +56,80 @@ const openai = new OpenAI({openaiApiKey});
 router.post('/generate-questions', async (req, res) => {
     try {
         const content = req.body.text; 
-        const prompt = `Given the following text, provide three follow-up questions in a JSON array format:
+        const prompt = `Given the following text, provide three to six follow-up questions in a JSON array format:
 
         ${content}
         
         Format the response as follows:
         ["First question?", "Second question?", "Third question?"]`;
+
+        if (!content) {
+          return res.status(400).json({ error: 'Content is required' });
+        }
+
+        const completion = await openai.chat.completions.create({
+            messages: [
+                { role: "system", content: prompt },
+                { role: "user", content: content },
+            ],
+            model: "gpt-3.5-turbo",
+        });
+        // console.log(JSON.parse(completion.choices[0]))
+        res.json(completion.choices[0]); // Send back only the relevant part of the response
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while interacting with OpenAI.' });
+    }
+});
+/**
+ * @swagger
+ * /api/generate-title:
+ *   post:
+ *     summary: Generate title for text provided
+ *     description: This endpoint takes a string of text and returns a title.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - text
+ *             properties:
+ *               text:
+ *                 type: string
+ *                 description: The text to generate title from.
+ *                 example: "Describe the process of photosynthesis."
+ *     responses:
+ *       200:
+ *         description: Successfully generated title
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 choices:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       text:
+ *                         type: string
+ *                         example: "What are the stages of photosynthesis?"
+ *       400:
+ *         description: Invalid request (e.g., missing text)
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/generate-title', async (req, res) => {
+    try {
+        const content = req.body.text; 
+        const prompt = `Given the following text, provide a title less than or equal to 38 characters:
+
+        ${content}
+        
+        Format the title as follows:
+        "This is the title of a thread"`;
 
         if (!content) {
           return res.status(400).json({ error: 'Content is required' });
