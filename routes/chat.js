@@ -23,6 +23,7 @@ class ChatServer {
                         model: 'gpt-4-1106-preview',
                         // messages: [{ role: 'user', content: 'Say this is a test' }],
                         messages: conversationHistory,
+                        max_tokens: 4096,
                         stream: true,
                       });
 
